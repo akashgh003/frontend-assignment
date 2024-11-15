@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Frontend Assignment</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .parent-container {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .container {
+           width: 80%;
+           height: 50vh;
+           margin-bottom: 20px;
+           display: grid;
+           grid-template-columns: repeat(5, 1fr);
+           align-items: end;
+           background-color: rgb(19, 2, 48); /* Background color */
+           border: 20px solid rgb(19, 2, 48); /* Border color matches the background */
+           overflow: hidden;
+        }
+
+
+        .bar {
+            width: 100%;
+            height: 10%;
+            transition: height 1s ease-in-out;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            width: 70%;
+            margin-bottom: 20px;
+        }
+
+        .btn {
+            padding: 10px 40px;
+            font-size: 16px;
+            cursor: pointer;
+            border: none;
+            color: white;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .btn.initiate {
+            background-color: #28a745;
+        }
+
+        .btn.initiate:hover {
+            background-color: #218838;
+        }
+
+        .btn.clear {
+            background-color: #6f42c1;
+        }
+
+        .btn.clear:hover {
+            background-color: #5a3796;
+        }
+
+        .btn.halt {
+            background-color: #dc3545;
+        }
+
+        .btn.halt:hover {
+            background-color: #c82333;
+        }
+
+        .footer {
+            margin-top: 20px;
+            font-size: 14px;
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+    <div class="parent-container">
+        <div class="container">
+            <div class="bar" style="background-color: #6840BE;"></div>
+            <div class="bar" style="background-color: #DE4899;"></div>
+            <div class="bar" style="background-color: #F55A68;"></div>
+            <div class="bar" style="background-color: #E0743E;"></div>
+            <div class="bar" style="background-color: #CC9523;"></div>
+        </div>
+        <div class="controls">
+            <button class="btn initiate" id="initiateBtn">Start</button>
+            <button class="btn clear" id="clearBtn">Reset</button>
+            <button class="btn halt" id="haltBtn">Stop</button>
+        </div>
+    </div>
+    <div class="footer">Astrome Assignment by Akash Ghosh</div>
+    <script>
+        const bars = document.querySelectorAll('.bar');
+        const initiateBtn = document.getElementById('initiateBtn');
+        const clearBtn = document.getElementById('clearBtn');
+        const haltBtn = document.getElementById('haltBtn');
+
+        let intervalIds = [];
+
+        const generateRandomHeight = () => Math.floor(Math.random() * 51) + 25;
+
+        const generateRandomSpeed = () => (Math.random() * 1 + 0.5).toFixed(2);
+
+        const initiateAnimation = () => {
+            haltAnimation();
+            bars.forEach(bar => {
+                const adjustHeight = () => {
+                    const height = `${generateRandomHeight()}%`;
+                    const speed = `${generateRandomSpeed()}s`;
+                    bar.style.transitionDuration = speed;
+                    bar.style.height = height;
+                };
+
+                adjustHeight();
+                const interval = setInterval(adjustHeight, generateRandomSpeed() * 1000);
+                intervalIds.push(interval);
+            });
+        };
+
+        const haltAnimation = () => {
+            intervalIds.forEach(clearInterval);
+            intervalIds = [];
+        };
+
+        const clearAnimation = () => {
+            haltAnimation();
+            bars.forEach(bar => (bar.style.height = '100%'));
+        };
+
+        initiateBtn.addEventListener('click', initiateAnimation);
+        haltBtn.addEventListener('click', haltAnimation);
+        clearBtn.addEventListener('click', clearAnimation);
+    </script>
+</body>
+</html>
